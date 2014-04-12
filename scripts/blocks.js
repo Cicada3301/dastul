@@ -1,78 +1,123 @@
 define(function(){
     var Blocks={
+        width:8,
+        height:8,
         standard:function(x, y, id){
             this.x=x;
             this.y=y;
             this.id=id;
             this.breakPhase=0;
         },
-        ids:['air', 'rock', 'grass', 'dirt'],
+        ids:['air', 'rock', 'grass', 'dirt', 'flower', 'coalOre', 'ironOre', 'sapling', 'log', 'leaf', 'water'],
+        ores:['coalOre', 'ironOre'],
+        nature:['flower', 'sapling'],
+        liquids:['water'],
         air:{
             id:0,
-            sprite:new Image(),
             friction:0.01,
             hardness:1,
             breakable:false,
             solid:false,
-            gettable:5,
-            gen:function(x, y){
-                Blocks.standard.call(this, x, y, 0);
-            }
+            gettable:5
         },
         rock:{
             id:1,
-            sprite:new Image(),
             friction:0.04,
             hardness:5,
             breakable:true,
             solid:true,
-            gettable:3,
-            gen:function(x, y){
-                Blocks.standard.call(this, x, y, 1);
-            }
+            gettable:3
         },
         grass:{
             id:2,
-            sprite:new Image(),
             friction:0.06,
             hardness:2,
             breakable:true,
             solid:true,
-            gettable:2,
-            gen:function(x, y){
-                this.type='grass';
-                this.breakPhase=0;
-                this.x=x;
-                this.y=y;
-            }
+            gettable:2
         },
         dirt:{
             id:3,
-            sprite:new Image(),
             friction:0.08,
             hardness:3,
             breakable:true,
             solid:true,
-            gettable:2,
-            gen:function(x, y){
-                this.type='dirt';
-                this.breakPhase=0;
-                this.x=x;
-                this.y=y;
-            }
+            gettable:2
+        },
+        flower:{
+            id:4,
+            chance:0.70,
+            friction:0.01,
+            hardness:1,
+            breakable:true,
+            solid:false,
+            gettable:1
+        },
+        coalOre:{
+            id:5,
+            chance:1,
+            friction:0.05,
+            hardness:6,
+            breakable:true,
+            solid:true,
+            gettable:3
+        },
+        ironOre:{
+            id:6,
+            chance:0.25,
+            friction:0.05,
+            hardness:7,
+            breakable:true,
+            solid:true,
+            gettable:4
+        },
+        sapling:{
+            id:7,
+            chance:0.30,
+            friction:0.02,
+            hardness:2,
+            breakable:true,
+            solid:false,
+            gettable:2
+        },
+        log:{
+            id:8,
+            friction:0.3,
+            hardness:6,
+            breakable:true,
+            solid:false,
+            gettable:2
+        },
+        leaf:{
+            id:9,
+            friction:0.6,
+            hardness:3,
+            breakable:true,
+            solid:false,
+            gettable:1
+        },
+        water:{
+            id:10,
+            friction:0.5,
+            hardness:1,
+            breakable:true,
+            solid:false,
+            gettable:5
         }
     };
-    Blocks.air.sprite.src='/matei/games/dastul/game/sprites/blocks/air.png';
-    Blocks.rock.sprite.src='/matei/games/dastul/game/sprites/blocks/rock.png';
-    Blocks.grass.sprite.src='/matei/games/dastul/game/sprites/blocks/rock.png';
-    Blocks.dirt.sprite.src='/matei/games/dastul/game/sprites/blocks/dirt.png';
-    Blocks.standard.prototype.draw=function(){
-        dastul.drawer.drawBlock(this);
+    Blocks.standard.prototype.draw=function(drawer){
+        drawer.drawBlock(this);
     };
-    Blocks.air.gen.prototype=Blocks.standard.create(Blocks.standard.prototype);
-    Blocks.rock.gen.prototype=Blocks.standard.create(Blocks.standard.prototype);
-    Blocks.grass.gen.prototype=Blocks.standard.create(Blocks.standard.prototype);
-    Blocks.dirt.gen.prototype=Blocks.standard.create(Blocks.standard.prototype);
-
+    for(var block=0; block<Blocks.ids.length; ++block){
+        var type=Blocks.ids[block];
+        Blocks[type].sprite=new Image();
+        Blocks[type].gen=function(block){
+            return function(x, y){
+                Blocks.standard.call(this, x, y, block)
+            }
+        }(block);
+        Blocks[type].sprite.src='/matei/games/dastul/game/sprites/blocks/'+type+'.png';
+        Blocks[type].gen.prototype=Object.create(Blocks.standard.prototype);
+    }
     return Blocks;
 });
