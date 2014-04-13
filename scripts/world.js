@@ -10,17 +10,18 @@ define(['blocks'], function(Blocks){
         this.minTerrain=50;
         this.dirt={
             minThickness:4,
-            maxThickness:10
+            maxThickness:20
         };
-        this.landVariation=1;
-        this.seaLevel=40
+        this.landVariation=2;
+        this.seaLevel=40;
+        this.saplings=[];
     }
     World.prototype.void=function() {
         this.cells = [];
         for (var column = 0; column < this.width; ++column) {
             this.cells.push([]);
             for (var row = 0; row < this.height; ++row) {
-                this.cells[column].push(new Blocks.air.gen(column, this.height - row));
+                this.cells[column].push(new Blocks.air.gen(column, row));
             }
         }
     };
@@ -31,43 +32,32 @@ define(['blocks'], function(Blocks){
             if(lastRandom+delta<this.maxTerrain||lastRandom+delta>this.minTerrain) delta*=-1;
             var random= lastRandom+delta;
             lastRandom= random;
-            this.cells[i][random] = new Blocks.grass.gen(i, this.height-random);
+            this.cells[i][random] = new Blocks.grass.gen(i, random);
             for (var j = 0; j < random; ++j) {
                 var dirtLayer=Math.floor(Math.random()*((this.dirt.maxThickness+this.dirt.minThickness)/2))+this.dirt.minThickness;
-                if(random-j<dirtLayer) this.cells[i][j] = new Blocks.dirt.gen(i, this.height-j);
-                else this.cells[i][j] = new Blocks.rock.gen(i, this.height - j);
+                if(random-j<dirtLayer) this.cells[i][j] = new Blocks.dirt.gen(i, j);
+                else this.cells[i][j] = new Blocks.rock.gen(i, j);
             }
         }
     };
     World.prototype.addSea=function(){
         for(var col=0; col<this.width; ++col){
-            for(var row=this.seaLevel; row<this.minTerrain+1; ++row){
+            for(var row=0; row<this.height; ++row){
                 var current=this.cells[col][row];
-                if(current.id===0||Blocks.nature.indexOf(Blocks.ids[current.id])){
-                    current=new Blocks.water.gen(col, this.height-row);
+                if((current.id==0||Blocks.nature.indexOf(Blocks.ids[current.id])&&current.y<this.seaLevel)){
+                    this.cells[col][row]=new Blocks.water.gen(col, row);
                 }else if(current.id===2){
-                    current=new Blocks.dirt.gen(col, this.height-row);
+                    this.cells[col][row]=new Blocks.dirt.gen(col, row);
                 }
             }
         }
-    }
+    };
     World.prototype.generateVein=function(block, context, x, y, size){
-        var x=x;
-        var y=y;
-        this.cells[x][y]=new block.gen(x, this.height-y);
-        for(var i=0; i<size-1; ++i){
-            var newX=x+Math.floor(Math.random()*3)-1;
-            var newY=y+Math.floor(Math.random()*3)-1;
-            var currentCell=this.cells[x][y]
-            if(currentCell.id===context.id){
-                currentCell=new block.gen();
-                x=newX;
-                y=newY;
-            }else{
-                --i;
-            }
-            if(i<20) return false;
-        }
+        this.cells[x][y]=new block.gen(x, y);
+        if(Math.random()<(2/size))if(this.cells[x][y+1]) if(this.cells[x][y+1].id=context.id) this.cells[x][y+1]=new block.gen(x, y+1);
+        if(Math.random()<(2/size))if(this.cells[x][y-1]) if(this.cells[x][y-1].id=context.id) this.cells[x][y-1]=new block.gen(x, y-1);
+        if(Math.random()<(2/size))if(this.cells[x+1]) if(this.cells[x+1][y].id=context.id) this.cells[x+1][y]=new block.gen(x+1, y);
+        if(Math.random()<(2/size))if(this.cells[x-1]) if(this.cells[x-1][y].id=context.id) this.cells[x-1][y]=new block.gen(x-1, y);
     };
     World.prototype.addOres=function(){
         var totalOreChance=0;
@@ -77,29 +67,63 @@ define(['blocks'], function(Blocks){
         for(var column=0; column<this.width; ++column){
             for(var row=0; row<this.height; ++row){
                 if(this.cells[column][row].id===Blocks.rock.id){
-                    var random=Math.random()<0.01;
-                    if(random){
-                        var sum=0;
-                        var oreChance=Math.random()*totalOreChance;
-                        for(var ore=0; ore<Blocks.ores.length; ++ore){
-                            var current=Blocks[Blocks.ores[ore]];
-                            if((oreChance<(sum+current.chance))&&(oreChance>current.chance)){
-                                this.generateVein(current, Blocks.rock, column, row, 4);
-                                ore=Blocks.ores.length;
-                            }
-                            sum+=current.chance;
-                        }
+                    var orify=Math.random()<0.01;
+                    if(orify){
+                        var chosenOre=Blocks.oresByChance[Math.floor(Math.random()*Blocks.oresByChance.length)];
+                        this.generateVein(Blocks[chosenOre], Blocks.rock, column, row, 4)
                     }
                 }
             }
         }
     };
+    World.prototype.growFoliage=function(x, y, size){
+       return false;
+    };
+    World.prototype.growTrees=function(){
+        for(var treeN=0; treeN<this.saplings.length; ++treeN){
+            var current=this.saplings[treeN];
+            this.cells[current.x][current.y]=Blocks.log.gen(current.x, current.y);
+            this.cells[current.x][current.y-1]=Blocks.log.gen(current.x, current.y-1);
+            this.cells[current.x][current.y-2]=Blocks.log.gen(current.x, current.y-2);
+            if(this.cells[current.x][current.y-3].id===0){
+                this.cells[current.x][current.y-3]=Blocks.log.gen(current.x, current.y-3);
+                if(this.cells[current.x][current.y-4].id===0&&Math.random()<0.8){
+                    this.cells[current.x][current.y-4]=Blocks.log.gen(current.x, current.y-4);
+                    if(this.cells[current.x][current.y-5].id===0&&Math.random()<0.6){
+                        this.cells[current.x][current.y-5]=Blocks.log.gen(current.x, current.y-5);
+                        if(this.cells[current.x][current.y-6].id===0&&Math.random()<0.4){
+                            this.cells[current.x][current.y-6]=Blocks.log.gen(current.x, current.y-6);
+                            if(this.cells[current.x][current.y-7].id===0&&Math.random()<0.2){
+                                this.cells[current.x][current.y-7]=Blocks.log.gen(current.x, current.y-7);
+                            }else{
+                                this.growFoliage(current.x, current.y-7, 7);
+                            }
+                        }else{
+                            this.growFoliage(current.x, current.y-6, 6);
+                        }
+                    }else{
+                        this.growFoliage(current.x, current.y-5, 5);
+                    }
+                }else{
+                    this.growFoliage(current.x, current.y-4, 4);
+                }
+            }else{
+                this.growFoliage(current.x, current.y-3, 3);
+            }
+        }
+    };
     World.prototype.addNature=function(){
         for(var col=0; col<this.width; ++col){
-            for(var row=this.maxTerrain-1; row<this.minTerrain; ++row){
-                var current=this.cells[col][row];
-                if(this.cells[col][row+1].id===2){
-                    current=new Blocks.sapling.gen(col, this.height-row);
+            for(var row=1; row<this.height; ++row){
+                if(this.cells[col][row-1].id===2&&this.cells[col][row].id===0){
+                    var naturalize=Math.random()<0.2;
+                    if(naturalize){
+                        var chosenNature=Blocks.natureByChance[Math.floor(Math.random()*Blocks.natureByChance.length)];
+                        this.cells[col][row]=new Blocks[chosenNature].gen(col, row);
+                        if(chosenNature==='sapling'){
+                            this.saplings.push({x:col, y:row});
+                        }
+                    }
                 }
             }
         }
@@ -110,6 +134,7 @@ define(['blocks'], function(Blocks){
         this.addOres();
         this.addNature();
         this.addSea();
+        //this.growTrees();
     };
     World.prototype.draw=function(drawer){
         drawer.drawBackground(this.time);

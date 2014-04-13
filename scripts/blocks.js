@@ -10,7 +10,9 @@ define(function(){
         },
         ids:['air', 'rock', 'grass', 'dirt', 'flower', 'coalOre', 'ironOre', 'sapling', 'log', 'leaf', 'water'],
         ores:['coalOre', 'ironOre'],
+        oresByChance:[],
         nature:['flower', 'sapling'],
+        natureByChance:[],
         liquids:['water'],
         air:{
             id:0,
@@ -56,7 +58,7 @@ define(function(){
         coalOre:{
             id:5,
             chance:1,
-            friction:0.05,
+            friction:0.75,
             hardness:6,
             breakable:true,
             solid:true,
@@ -73,7 +75,7 @@ define(function(){
         },
         sapling:{
             id:7,
-            chance:0.30,
+            chance:0.20,
             friction:0.02,
             hardness:2,
             breakable:true,
@@ -105,6 +107,16 @@ define(function(){
             gettable:5
         }
     };
+    for(var i=0; i<Blocks.ores.length; ++i){
+        for(var j=0; j<Blocks[Blocks.ores[i]].chance; j+=0.01){
+            Blocks.oresByChance.push(Blocks.ores[i]);
+        }
+    }
+    for(var i=0; i<Blocks.nature.length; ++i){
+        for(var j=0; j<Blocks[Blocks.nature[i]].chance; j+=0.01){
+            Blocks.natureByChance.push(Blocks.nature[i]);
+        }
+    }
     Blocks.standard.prototype.draw=function(drawer){
         drawer.drawBlock(this);
     };
