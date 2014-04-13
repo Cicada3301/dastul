@@ -13,7 +13,7 @@ define(['blocks'], function(Blocks){
             maxThickness:20
         };
         this.landVariation=2;
-        this.seaLevel=40;
+        this.seaLevel=32;
         this.saplings=[];
     }
     World.prototype.void=function() {
@@ -42,9 +42,9 @@ define(['blocks'], function(Blocks){
     };
     World.prototype.addSea=function(){
         for(var col=0; col<this.width; ++col){
-            for(var row=0; row<this.height; ++row){
+            for(var row=this.seaLevel; row<this.height; ++row){
                 var current=this.cells[col][row];
-                if((current.id==0||Blocks.nature.indexOf(Blocks.ids[current.id])&&current.y<this.seaLevel)){
+                if(current.id==0||Blocks.nature.indexOf(Blocks.ids[current.id])>=0){
                     this.cells[col][row]=new Blocks.water.gen(col, row);
                 }else if(current.id===2){
                     this.cells[col][row]=new Blocks.dirt.gen(col, row);

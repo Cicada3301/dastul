@@ -8,7 +8,7 @@ define(['blocks'], function(Blocks){
         this.ctx=this.canvas.getContext('2d');
     };
     Drawer.prototype.drawBlock=function(block){
-        this.ctx.drawImage(Blocks[Blocks.ids[block.id]].sprite, block.x*Blocks.width, block.y*Blocks.height)
+        this.ctx.drawImage(Blocks[Blocks.ids[block.id]].sprite, block.x*Blocks.width, this.canvas.height-block.y*Blocks.height)
     };
     Drawer.prototype.drawBackground=function(time){
         var gradient=this.ctx.createLinearGradient(0, this.canvas.height, 0, 0);
