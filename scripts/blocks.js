@@ -1,19 +1,20 @@
 define(function(){
     var Blocks={
-        width:8,
-        height:8,
         standard:function(x, y, id){
             this.x=x;
             this.y=y;
             this.id=id;
             this.breakPhase=0;
         },
-        ids:['air', 'rock', 'grass', 'dirt', 'flower', 'coalOre', 'ironOre', 'sapling', 'log', 'leaf', 'water'],
+        ids:['air', 'rock', 'grass', 'dirt', 'flower', 'coalOre', 'ironOre', 'sapling', 'trunk', 'leaf', 'water'],
         ores:['coalOre', 'ironOre'],
         oresByChance:[],
         nature:['flower', 'sapling'],
         natureByChance:[],
         liquids:['water'],
+        is:function(cells, x, y, id){
+            if(cells[x]) if(cells[x][y]) return cells[x][y].id===id
+        },
         air:{
             id:0,
             friction:0.01,
@@ -82,7 +83,7 @@ define(function(){
             solid:false,
             gettable:2
         },
-        log:{
+        trunk:{
             id:8,
             friction:0.3,
             hardness:6,
@@ -128,7 +129,8 @@ define(function(){
                 Blocks.standard.call(this, x, y, block)
             }
         }(block);
-        Blocks[type].sprite.src='/matei/games/dastul/game/sprites/blocks/'+type+'.png';
+        Blocks[type].sprite.src=//'/matei/games/dastul/game/sprites/blocks/'+type+'.png';
+        'C:/Users/Matei/Desktop/copot.eu_matei/online/games/dastul/game/sprites/blocks/'+type+'.png';
         Blocks[type].gen.prototype=Object.create(Blocks.standard.prototype);
     }
     return Blocks;
