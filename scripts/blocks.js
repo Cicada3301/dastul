@@ -6,7 +6,7 @@ define(function(){
             this.id=id;
             this.breakPhase=0;
         },
-        ids:['air', 'rock', 'grass', 'dirt', 'flower', 'coalOre', 'ironOre', 'sapling', 'trunk', 'leaf', 'water'],
+        ids:['air', 'rock', 'grass', 'dirt', 'flower', 'coalOre', 'ironOre', 'sapling', 'trunk', 'leaf', 'water', 'sand'],
         ores:['coalOre', 'ironOre'],
         oresByChance:[],
         nature:['flower', 'sapling'],
@@ -106,6 +106,14 @@ define(function(){
             breakable:true,
             solid:false,
             gettable:5
+        },
+        sand:{
+            id:11,
+            friction:0.2,
+            hardness:2,
+            breakable:true,
+            solid:true,
+            gettable:3
         }
     };
     for(var i=0; i<Blocks.ores.length; ++i){

@@ -5,7 +5,7 @@ function getArray(main, files){
     files.push('Blocks');
     return files
 }
-define(getArray('generation/terrain/', ['basicLayers', 'sea', 'nature']), function(basicLayers, sea, Nature, Blocks){
+define(getArray('generation/terrain/', ['basicLayers', 'sea', 'nature', 'cave']), function(basicLayers, sea, Nature, Cave,Blocks){
     function Terrain(world){
         this.min=100;
         this.max=20;
@@ -17,6 +17,7 @@ define(getArray('generation/terrain/', ['basicLayers', 'sea', 'nature']), functi
         this.variation=1;
 
         this.basicLayers=basicLayers;
+        this.cave=new Cave(world, 0.005);
         this.sea=sea;
         this.nature=new Nature(world);
         this.world=world;
@@ -34,6 +35,7 @@ define(getArray('generation/terrain/', ['basicLayers', 'sea', 'nature']), functi
     Terrain.prototype.generate=function(){
         this.empty();
         this.basicLayers.generate(this.world);
+        this.cave.generate();
         this.sea.generate(this.world);
         this.nature.generate(this.world, this.nature);
     };

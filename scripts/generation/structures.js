@@ -5,12 +5,13 @@ function getArray(main, files){
     return files
 }
 define(getArray('generation/structures/', ['tree', 'ores']), function(Tree, ore){
-    var Structures={
-        Tree:Tree,
-        ore:ore,
-        generate:function(world){
-            ore.choose(world);
-        }
+    function Structures(world){
+        this.world=world;
+        this.Tree=Tree;
+        this.ore=ore;
+    }
+    Structures.prototype.generate=function(){
+        this.ore.choose(this.world);
     };
     return Structures;
 });

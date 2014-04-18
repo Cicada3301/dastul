@@ -18,11 +18,7 @@ define(['blocks', 'generation'], function(Blocks, Generation){
         drawer.drawBackground(this.time);
         for(var column=0; column<this.width; ++column){
             for(var row=0; row<this.height; ++row){
-                try {
-                    this.cells[column][row].draw(drawer);
-                }catch(e){
-                    console.log(this.cells[column][row]);
-                }
+                this.cells[column][row].draw(drawer);
             }
         }
     };

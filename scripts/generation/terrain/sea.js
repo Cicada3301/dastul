@@ -8,7 +8,9 @@ define(['blocks'], function(Blocks){
                         if(world.checkBlock(col, row [7])) world.generation.terrain.nature.saplings.splice(world.generation.terrain.nature.saplings.indexOf({x:col, y:row}), 1);
                         world.cells[col][row]=new Blocks.water.gen(col, row);
                     }else if(world.checkBlock(col, row, [2])){
-                        world.cells[col][row]=new Blocks.dirt.gen(col, row);
+                        world.cells[col][row]=new Blocks.sand.gen(col, row);
+                        world.cells[col][row-1]=new Blocks.sand.gen(col, row-1);
+                        if(Math.random()>0.7) world.cells[col][row-2]=new Blocks.sand.gen(col, row-2);
                     }
                 }
             }
