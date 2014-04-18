@@ -1,4 +1,4 @@
-define(['blocks', 'generation', 'mathUtils'], function(Blocks, Generation, mathUtils){
+define(['blocks', 'generation'], function(Blocks, Generation){
     function World(width, height){
         this.cells=[];
         this.loaded=[];

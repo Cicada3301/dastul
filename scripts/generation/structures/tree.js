@@ -35,14 +35,5 @@ define(['../../blocks', 'mathUtils'], function(Blocks, mathUtils){
         this.world.cells[x][y+2]=new this.trunk.gen(x, y+2);
         this.addBranch(x, y+3)
     };
-    Tree.prototype.generate=function(world){
-        while(world.terrain.nature.saplings.length){
-            var x=world.terrain.nature.saplings[0].x;
-            var y=world.terrain.nature.saplings[0].y;
-            var current=new Tree(world, x, y, Blocks.trunk, Blocks.leaf);
-            current.grow();
-            world.terrain.nature.saplings.shift();
-        }
-    }
     return Tree;
 });

@@ -26,8 +26,8 @@ define(['blocks'], function(Blocks){
             var trial=40;
             while(size&&trial){
                 --trial;
-                var newX=x+Math.floor(Math.random()*3)-2;
-                var newY=y+Math.floor(Math.random()*3)-2;
+                var newX=x+Math.floor(Math.random()*3)-1;
+                var newY=y+Math.floor(Math.random()*3)-1;
                 if(world.checkBlock(newX, newY, ['rock', 'coalOre', 'ironOre'])){
                     x=newX;
                     y=newY;
