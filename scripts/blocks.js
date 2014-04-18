@@ -5,6 +5,7 @@ define(function(){
             this.y=y;
             this.id=id;
             this.breakPhase=0;
+            this.lightLevel=0;
         },
         ids:['air', 'rock', 'grass', 'dirt', 'flower', 'coalOre', 'ironOre', 'sapling', 'trunk', 'leaf', 'water', 'sand'],
         ores:['coalOre', 'ironOre'],
@@ -21,7 +22,8 @@ define(function(){
             hardness:1,
             breakable:false,
             solid:false,
-            gettable:5
+            gettable:5,
+            transparency:1
         },
         rock:{
             id:1,
@@ -29,7 +31,8 @@ define(function(){
             hardness:5,
             breakable:true,
             solid:true,
-            gettable:3
+            gettable:3,
+            transparency:0.9
         },
         grass:{
             id:2,
@@ -37,7 +40,8 @@ define(function(){
             hardness:2,
             breakable:true,
             solid:true,
-            gettable:2
+            gettable:2,
+            transparency:0.9
         },
         dirt:{
             id:3,
@@ -45,7 +49,8 @@ define(function(){
             hardness:3,
             breakable:true,
             solid:true,
-            gettable:2
+            gettable:2,
+            transparency:0.9
         },
         flower:{
             id:4,
@@ -54,7 +59,8 @@ define(function(){
             hardness:1,
             breakable:true,
             solid:false,
-            gettable:1
+            gettable:1,
+            transparency:0.999
         },
         coalOre:{
             id:5,
@@ -63,7 +69,8 @@ define(function(){
             hardness:6,
             breakable:true,
             solid:true,
-            gettable:3
+            gettable:3,
+            transparency:0.9
         },
         ironOre:{
             id:6,
@@ -72,7 +79,8 @@ define(function(){
             hardness:7,
             breakable:true,
             solid:true,
-            gettable:4
+            gettable:4,
+            transparency:0.9
         },
         sapling:{
             id:7,
@@ -81,7 +89,8 @@ define(function(){
             hardness:2,
             breakable:true,
             solid:false,
-            gettable:2
+            gettable:2,
+            transparency:0.999
         },
         trunk:{
             id:8,
@@ -89,7 +98,8 @@ define(function(){
             hardness:6,
             breakable:true,
             solid:false,
-            gettable:2
+            gettable:2,
+            transparency:0.9
         },
         leaf:{
             id:9,
@@ -97,7 +107,8 @@ define(function(){
             hardness:3,
             breakable:true,
             solid:false,
-            gettable:1
+            gettable:1,
+            transparency:0.998
         },
         water:{
             id:10,
@@ -105,7 +116,8 @@ define(function(){
             hardness:1,
             breakable:true,
             solid:false,
-            gettable:5
+            gettable:5,
+            transparency:0.99
         },
         sand:{
             id:11,
@@ -113,7 +125,8 @@ define(function(){
             hardness:2,
             breakable:true,
             solid:true,
-            gettable:3
+            gettable:3,
+            transparency:0.9
         }
     };
     for(var i=0; i<Blocks.ores.length; ++i){
@@ -138,7 +151,7 @@ define(function(){
             }
         }(block);
         Blocks[type].sprite.src=//'/matei/games/dastul/game/sprites/blocks/'+type+'.png';
-        'C:/Users/Matei/Desktop/copot.eu_matei/online/games/dastul/game/sprites/blocks/'+type+'.png';
+       'C:/Users/Matei/Desktop/copot.eu_matei/online/games/dastul/game/sprites/blocks/'+type+'.png';
         Blocks[type].gen.prototype=Object.create(Blocks.standard.prototype);
     }
     return Blocks;
