@@ -2,25 +2,25 @@ function getArray(main, files){
     for(var file=0; file<files.length; ++file){
         files[file]=main+files[file];
     }
-    files.push('Blocks');
+    files.push('Blocks', 'mathUtils');
     return files
 }
-define(getArray('generation/terrain/', ['basicLayers', 'sea', 'nature', 'cave']), function(basicLayers, sea, Nature, Cave,Blocks){
-    function Terrain(world, seed){
-        this.min=20;
-        this.max=100;
+define(getArray('generation/terrain/', ['basicLayers', 'sea', 'nature', 'cave']), function(basicLayers, sea, Nature, Cave, Blocks, mathUtils){
+    function Terrain(world){
+        this.world=world;
+        this.min=44;
+        this.max=84;
         this.seaLevel=64;
         this.dirt={
             min:4,
             max:14
         };
-        this.variation=1;
+        this.variation=0.6;
 
         this.basicLayers=basicLayers;
-        this.cave=new Cave(world, 0.005);
+        this.cave=new Cave(world, mathUtils.getRandomInt(0, 1000, this.world.seed)/100000);
         this.sea=sea;
         this.nature=new Nature(world);
-        this.world=world;
     }
     Terrain.prototype.empty=function(){
         this.world.cells.length=0;

@@ -8,6 +8,7 @@ define(['blocks', 'generation'], function(Blocks, Generation){
         this.time=230;
         this.spawnPoint={x:0, y:0};
         this.seed={
+            original:seed,
             value:seed
         };
         this.generation=new Generation(this);
@@ -26,6 +27,7 @@ define(['blocks', 'generation'], function(Blocks, Generation){
     };
     World.prototype.generate=function(){
         this.generation.generate();
+        this.seed.value=this.seed.original;
     };
     World.prototype.draw=function(drawer){
         drawer.drawBackground(this.time);

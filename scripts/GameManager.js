@@ -6,10 +6,10 @@ define(['physics', 'blocks', /*'settings',*/ 'entities', 'world', 'drawer'], fun
         this.physics=new Physics();
         this.entities=new Entities(this.world);
     }
-    GameManager.prototype.init=function(){
+    GameManager.prototype.init=function(shadows){
         this.drawer.reset();
         this.world.generate();
-        this.world.draw(this.drawer);
+        this.world.draw(this.drawer, shadows);
     };
     return GameManager;
 });

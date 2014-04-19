@@ -21,8 +21,8 @@ define(['blocks'], function(Blocks){
     };
     Drawer.prototype.drawBlock=function(block){
         this.ctx.drawImage(Blocks[Blocks.ids[block.id]].sprite, block.x*this.blocks.width, this.canvas.height-block.y*this.blocks.height, this.blocks.width, this.blocks.height);
-        //this.ctx.fillStyle='rgba(0, 0, 0, '+(1-block.lightLevel)+')';
-        //this.ctx.fillRect(block.x*this.blocks.width-0.5, this.canvas.height-block.y*this.blocks.height-0.5, this.blocks.width+1, this.blocks.height+1);
+        this.ctx.fillStyle='rgba(0, 0, 0, '+(1-block.lightLevel)+')';
+        this.ctx.fillRect(block.x*this.blocks.width-0.5, this.canvas.height-block.y*this.blocks.height-0.5, this.blocks.width+1, this.blocks.height+1);
     };
     Drawer.prototype.drawBackground=function(time){
         var gradient=this.ctx.createLinearGradient(0, this.canvas.height, 0, 0);

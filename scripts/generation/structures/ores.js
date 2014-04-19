@@ -1,4 +1,4 @@
-define(['blocks'], function(Blocks){
+define(['blocks', 'mathUtils'], function(Blocks, mathUtils){
     var ore={
         choose:function(world){
             var totalOreChance=0;
@@ -8,10 +8,10 @@ define(['blocks'], function(Blocks){
             for(var column=0; column<world.width; ++column){
                 for(var row=0; row<world.height; ++row){
                     if(world.cells[column][row].id===Blocks.rock.id){
-                        var orify=Math.random()<0.01;
+                        var orify=mathUtils.getRandomBoolean(mathUtils.getRandomInt(0, 100, world.seed)/10000, world.seed);
                         if(orify){
-                            var chosenOre=Blocks.oresByChance[Math.floor(Math.random()*Blocks.oresByChance.length)];
-                            this.generateVein(world, Blocks[chosenOre], Blocks.rock, column, row, 4)
+                            var chosenOre=Blocks.oresByChance[mathUtils.getRandomInt(0, Blocks.oresByChance.length, world.seed)];
+                            this.generateVein(world, Blocks[chosenOre], Blocks.rock, column, row, mathUtils.getRandomInt(3, 12, world.seed))
                         }
                     }
                 }
@@ -26,8 +26,8 @@ define(['blocks'], function(Blocks){
             var trial=40;
             while(size&&trial){
                 --trial;
-                var newX=x+Math.floor(Math.random()*3)-1;
-                var newY=y+Math.floor(Math.random()*3)-1;
+                var newX=x+mathUtils.getRandomInt(-1, 1, world.seed);
+                var newY=y+mathUtils.getRandomInt(-1, 1, world.seed);
                 if(world.checkBlock(newX, newY, ['rock', 'coalOre', 'ironOre'])){
                     x=newX;
                     y=newY;

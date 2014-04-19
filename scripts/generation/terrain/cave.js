@@ -1,4 +1,4 @@
-define(['../../blocks'], function(Blocks){
+define(['../../blocks', 'mathUtils'], function(Blocks, mathUtils){
     function Cave(world, spawnrate){
         this.world=world;
         this.spawnRate=spawnrate;
@@ -11,8 +11,8 @@ define(['../../blocks'], function(Blocks){
         var y=y;
         while(size){
             --size;
-            var newX=x+Math.floor(Math.random()*3)-1;
-            var newY=y+Math.floor(Math.random()*2.4)-1;
+            var newX=x+mathUtils.getRandomInt(-1, 1, this.world.seed);
+            var newY=y+mathUtils.getRandomInt(-1, 0, this.world.seed);
             if(this.world.checkBlock(newX, newY, this.spawnable)&&newY>4){
                 x=newX;
                 y=newY;
@@ -32,7 +32,7 @@ define(['../../blocks'], function(Blocks){
     Cave.prototype.generate=function(){
         for(var col=0; col<this.world.width; ++col){
             for(var row=0; row<this.world.height; ++row){
-                if(this.world.checkBlock(col, row, ['grass', 'sand'])&&Math.random()<this.spawnRate) this.add(col, row, Math.floor(Math.random()*200+2));
+                if(this.world.checkBlock(col, row, ['grass', 'sand'])&&mathUtils.getRandomBoolean(this.spawnRate, this.world.seed)) this.add(col, row, mathUtils.getRandomInt(2, 202, this.world.seed));
             }
         }
     };
