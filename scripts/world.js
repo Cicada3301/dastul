@@ -1,5 +1,5 @@
 define(['blocks', 'generation'], function(Blocks, Generation){
-    function World(width, height){
+    function World(width, height, seed){
         this.cells=[];
         this.loaded=[];
         this.name='';
@@ -7,6 +7,9 @@ define(['blocks', 'generation'], function(Blocks, Generation){
         this.height=height;
         this.time=230;
         this.spawnPoint={x:0, y:0};
+        this.seed={
+            value:seed
+        };
         this.generation=new Generation(this);
     }
     World.prototype.setSpawnPoint=function(){

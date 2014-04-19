@@ -1,4 +1,4 @@
-define(['generation/structures/tree', 'blocks'], function(Tree, Blocks){
+define(['generation/structures/tree', 'blocks', 'mathUtils'], function(Tree, Blocks, mathUtils){
     function Nature(world){
         this.saplings=[];
         this.trees=[];
@@ -8,9 +8,10 @@ define(['generation/structures/tree', 'blocks'], function(Tree, Blocks){
             for(var col=0; col<this.world.width; ++col){
                 for(var row=1; row<this.world.height; ++row){
                     if(this.world.checkBlock(col, row-1, [2])&&this.world.checkBlock(col, row, [0])){
-                        var naturalize=Math.random()<0.2;
+                        var naturalize=mathUtils.getRandomBoolean(0.2, this.world.seed);
                         if(naturalize){
-                            var chosenNature=Blocks.natureByChance[Math.floor(Math.random()*Blocks.natureByChance.length)];
+                            var chosenNature=Blocks.natureByChance[mathUtils.getRandomInt(0, Blocks.natureByChance.length-1, this.world.seed)];
+                            console.log(chosenNature)
                             this.world.cells[col][row]=new Blocks[chosenNature].gen(col, row);
                             if(chosenNature==='sapling'){
                                 this.saplings.push({x:col, y:row});

@@ -14,7 +14,7 @@ define(getArray('generation/', ['structures', 'terrain', 'shadow']), function(St
     Generation.prototype.generate=function(){
         this.terrain.generate();
         this.structs.generate();
-        shadow.apply(this.world);
+        //shadow.apply(this.world);
     };
     return Generation;
 });

@@ -6,7 +6,7 @@ function getArray(main, files){
     return files
 }
 define(getArray('generation/terrain/', ['basicLayers', 'sea', 'nature', 'cave']), function(basicLayers, sea, Nature, Cave,Blocks){
-    function Terrain(world){
+    function Terrain(world, seed){
         this.min=20;
         this.max=100;
         this.seaLevel=64;
