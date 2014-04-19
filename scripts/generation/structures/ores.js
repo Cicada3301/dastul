@@ -10,7 +10,7 @@ define(['blocks', 'mathUtils'], function(Blocks, mathUtils){
                     if(world.cells[column][row].id===Blocks.rock.id){
                         var orify=mathUtils.getRandomBoolean(mathUtils.getRandomInt(0, 100, world.seed)/10000, world.seed);
                         if(orify){
-                            var chosenOre=Blocks.oresByChance[mathUtils.getRandomInt(0, Blocks.oresByChance.length, world.seed)];
+                            var chosenOre=Blocks.oresByChance[mathUtils.getRandomInt(0, Blocks.oresByChance.length-1, world.seed)];
                             this.generateVein(world, Blocks[chosenOre], Blocks.rock, column, row, mathUtils.getRandomInt(3, 12, world.seed))
                         }
                     }
