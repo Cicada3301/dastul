@@ -12,11 +12,15 @@ define(['generation/structures/tree', 'blocks', 'mathUtils'], function(Tree, Blo
                         if(naturalize){
                             var num=mathUtils.getRandomInt(0, Blocks.natureByChance.length-1, this.world.seed);
                             var chosenNature=Blocks.natureByChance[num];
-                            this.world.cells[col][row]=new Blocks[chosenNature].gen(col, row);
+                            this.world.cells[col][row]=new Blocks[chosenNature].gen();
                             if(chosenNature==='sapling'){
                                 this.saplings.push({x:col, y:row});
                             }
                         }
+                    }
+
+                    if(row>(this.world.height-this.world.height/10)&&mathUtils.getRandomBoolean(0.1, this.world.seed)){
+                        this.world.cells[col][row] = new Blocks.cloud.gen();
                     }
                 }
             }

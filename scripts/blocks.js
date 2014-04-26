@@ -1,13 +1,11 @@
 define(function(){
     var Blocks={
-        standard:function(x, y, id){
-            this.x=x;
-            this.y=y;
+        standard:function(id){
             this.id=id;
             this.breakPhase=0;
             this.lightLevel=0;
         },
-        ids:['air', 'rock', 'grass', 'dirt', 'flower', 'coalOre', 'ironOre', 'sapling', 'trunk', 'leaf', 'water', 'sand'],
+        ids:['air', 'rock', 'grass', 'dirt', 'flower', 'coalOre', 'ironOre', 'sapling', 'trunk', 'leaf', 'water', 'sand', 'cloud'],
         ores:['coalOre', 'ironOre'],
         oresByChance:[],
         nature:['flower', 'sapling'],
@@ -23,7 +21,7 @@ define(function(){
             breakable:false,
             solid:false,
             gettable:5,
-            transparency:1
+            transparency:0.999
         },
         rock:{
             id:1,
@@ -127,6 +125,15 @@ define(function(){
             solid:true,
             gettable:3,
             transparency:0.9
+        },
+        cloud:{
+            id:12,
+            friction:0.04,
+            hardness:1,
+            breakable:false,
+            solid:false,
+            gettable:3,
+            transparency:0.3
         }
     };
     for(var i=0; i<Blocks.ores.length; ++i){
@@ -139,19 +146,20 @@ define(function(){
             Blocks.natureByChance.push(Blocks.nature[i]);
         }
     }
-    Blocks.standard.prototype.draw=function(drawer){
-        drawer.drawBlock(this);
+    Blocks.standard.prototype.draw=function(drawer, x, y){
+        drawer.drawBlock(this, x, y);
     };
     for(var block=0; block<Blocks.ids.length; ++block){
         var type=Blocks.ids[block];
         Blocks[type].sprite=new Image();
         Blocks[type].gen=function(block){
-            return function(x, y){
-                Blocks.standard.call(this, x, y, block)
+            return function(){
+                Blocks.standard.call(this, block)
             }
         }(block);
         Blocks[type].sprite.src=//'/matei/games/dastul/game/sprites/blocks/'+type+'.png';
-       'C:/Users/Matei/Desktop/copot.eu_matei/online/games/dastul/game/sprites/blocks/'+type+'.png';
+        'C:/Users/Matei/Desktop/copot.eu_matei/online/games/dastul/game/sprites/blocks/'+type+'.png';
+            //'http://localhost:63342/game/sprites/blocks/'+type+'.png';
         Blocks[type].gen.prototype=Object.create(Blocks.standard.prototype);
     }
     return Blocks;

@@ -10,12 +10,12 @@ define(getArray('generation/terrain/', ['basicLayers', 'sea', 'nature', 'cave'])
         this.world=world;
         this.min=44;
         this.max=84;
-        this.seaLevel=64;
+        this.seaLevel=Math.floor(world.height/2);
         this.dirt={
-            min:4,
-            max:14
+            min:6,
+            max:18
         };
-        this.variation=0.6;
+        this.variation=world.roughness;
 
         this.basicLayers=basicLayers;
         this.cave=new Cave(world, mathUtils.getRandomInt(0, 1000, this.world.seed)/100000);
@@ -28,7 +28,7 @@ define(getArray('generation/terrain/', ['basicLayers', 'sea', 'nature', 'cave'])
         for (var column = 0; column < this.world.width; ++column) {
             this.world.cells.push([]);
             for (var row = 0; row < this.world.height; ++row) {
-                this.world.cells[column].push(new Blocks.air.gen(column, row));
+                this.world.cells[column].push(new Blocks.air.gen());
             }
         }
     };

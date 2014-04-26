@@ -5,7 +5,7 @@ define(['../../blocks', 'mathUtils'], function(Blocks, mathUtils){
         this.spawnable=['grass', 'dirt', 'ironOre', 'coalOre', 'sand', 'rock', 'air']
     }
     Cave.prototype.add=function(x, y, size){
-        if(this.world.checkBlock(x, y, this.spawnable)) this.world.cells[x][y]=new Blocks.air.gen(x, y);
+        if(this.world.checkBlock(x, y, this.spawnable)) this.world.cells[x][y]=new Blocks.air.gen();
         var size=size;
         var x=x;
         var y=y;
@@ -16,15 +16,15 @@ define(['../../blocks', 'mathUtils'], function(Blocks, mathUtils){
             if(this.world.checkBlock(newX, newY, this.spawnable)&&newY>4){
                 x=newX;
                 y=newY;
-                this.world.cells[x][y]=new Blocks.air.gen(x, y);
-                if(this.world.checkBlock(x+1, y,   Blocks.ids)) this.world.cells[x+1][y]  =new Blocks.air.gen(x+1, y);
-                if(this.world.checkBlock(x-1, y,   Blocks.ids)) this.world.cells[x-1][y]  =new Blocks.air.gen(x-1, y);
-                if(this.world.checkBlock(x+1, y+1, Blocks.ids)) this.world.cells[x+1][y+1]=new Blocks.air.gen(x+1, y+1);
-                if(this.world.checkBlock(x+1, y-1, Blocks.ids)) this.world.cells[x+1][y-1]=new Blocks.air.gen(x+1, y-1);
-                if(this.world.checkBlock(x-1, y+1, Blocks.ids)) this.world.cells[x-1][y+1]=new Blocks.air.gen(x-1, y+1);
-                if(this.world.checkBlock(x-1, y-1, Blocks.ids)) this.world.cells[x-1][y-1]=new Blocks.air.gen(x-1, y-1);
-                if(this.world.checkBlock(x, y-1,   Blocks.ids)) this.world.cells[x][y-1]  =new Blocks.air.gen(x, y-1);
-                if(this.world.checkBlock(x, y+1,   Blocks.ids)) this.world.cells[x][y+1]  =new Blocks.air.gen(x, y+1);
+                this.world.cells[x][y]=new Blocks.air.gen();
+                if(this.world.checkBlock(x+1, y,   Blocks.ids)) this.world.cells[x+1][y]  =new Blocks.air.gen();
+                if(this.world.checkBlock(x-1, y,   Blocks.ids)) this.world.cells[x-1][y]  =new Blocks.air.gen();
+                if(this.world.checkBlock(x+1, y+1, Blocks.ids)) this.world.cells[x+1][y+1]=new Blocks.air.gen();
+                if(this.world.checkBlock(x+1, y-1, Blocks.ids)) this.world.cells[x+1][y-1]=new Blocks.air.gen();
+                if(this.world.checkBlock(x-1, y+1, Blocks.ids)) this.world.cells[x-1][y+1]=new Blocks.air.gen();
+                if(this.world.checkBlock(x-1, y-1, Blocks.ids)) this.world.cells[x-1][y-1]=new Blocks.air.gen();
+                if(this.world.checkBlock(x, y-1,   Blocks.ids)) this.world.cells[x][y-1]  =new Blocks.air.gen();
+                if(this.world.checkBlock(x, y+1,   Blocks.ids)) this.world.cells[x][y+1]  =new Blocks.air.gen();
 
             }
         }

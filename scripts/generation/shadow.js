@@ -54,7 +54,8 @@ define(['blocks'], function(Blocks){
                     }
                 }
             }
-            for(var i=0; i<5; ++i) cicle();
+            for(var i=0; i<20; ++i)
+            cicle();
         }
     };
     return shadow;

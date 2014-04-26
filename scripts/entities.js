@@ -10,7 +10,8 @@ define(getArray('entities/', ['player']), function(Player){
         this.world=world;
     }
     Entities.prototype.init=function(){
-        this.array=[new Player()]
+        this.player=new Player(this.world);
+        this.array=[this.player];
     };
     return Entities;
 });

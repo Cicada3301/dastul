@@ -18,7 +18,7 @@ define(['blocks', 'mathUtils'], function(Blocks, mathUtils){
             }
         },
         generateVein:function(world, block, context, x, y, size){
-            world.cells[x][y]=new block.gen(x, y);
+            world.cells[x][y]=new block.gen();
             var x=x;
             var y=y;
             var size=size;
@@ -32,7 +32,7 @@ define(['blocks', 'mathUtils'], function(Blocks, mathUtils){
                     x=newX;
                     y=newY;
                     --size;
-                    world.cells[x][y]=new block.gen(x, y);
+                    world.cells[x][y]=new block.gen();
                 }
             }
         }
