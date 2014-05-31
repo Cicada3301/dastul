@@ -5,10 +5,10 @@ define(function(){
             this.breakPhase=0;
             this.lightLevel=0;
         },
-        ids:['air', 'rock', 'grass', 'dirt', 'flower', 'coalOre', 'ironOre', 'sapling', 'trunk', 'leaf', 'water', 'sand', 'cloud'],
+        ids:['air', 'rock', 'grass', 'dirt', 'flower', 'coalOre', 'ironOre', 'sapling', 'trunk', 'leaf', 'water', 'sand', 'cloud', 'bush'],
         ores:['coalOre', 'ironOre'],
         oresByChance:[],
-        nature:['flower', 'sapling'],
+        nature:['flower', 'sapling', 'bush'],
         natureByChance:[],
         liquids:['water'],
         is:function(cells, x, y, id){
@@ -52,7 +52,7 @@ define(function(){
         },
         flower:{
             id:4,
-            chance:0.70,
+            chance:0.04,
             friction:0.01,
             hardness:1,
             breakable:true,
@@ -82,7 +82,7 @@ define(function(){
         },
         sapling:{
             id:7,
-            chance:0.20,
+            chance:0.03,
             friction:0.02,
             hardness:2,
             breakable:true,
@@ -134,6 +134,16 @@ define(function(){
             solid:false,
             gettable:3,
             transparency:0.3
+        },
+        bush:{
+            id: 13,
+            friction: 0.1,
+            chance:0.02,
+            hardness: 1,
+            breakable: true,
+            solid: false,
+            gettable: 1,
+            transparency:0.5
         }
     };
     for(var i=0; i<Blocks.ores.length; ++i){
@@ -158,8 +168,9 @@ define(function(){
             }
         }(block);
         Blocks[type].sprite.src=//'/matei/games/dastul/game/sprites/blocks/'+type+'.png';
-        'C:/Users/Matei/Desktop/copot.eu_matei/online/games/dastul/game/sprites/blocks/'+type+'.png';
-            //'http://localhost:63342/game/sprites/blocks/'+type+'.png';
+        'file:///C:/Users/Matei/Desktop/copot.eu_matei/online/games/dastul/game/sprites/blocks/'+type+'.png';
+        //'/game/sprites/blocks/'+type+'.png';
+        //'../sprites/blocks/' + type + '.png';
         Blocks[type].gen.prototype=Object.create(Blocks.standard.prototype);
     }
     return Blocks;

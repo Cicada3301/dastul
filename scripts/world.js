@@ -1,8 +1,9 @@
 define(['blocks', 'generation'], function(Blocks, Generation){
-    function World(width, height, seed, roughness){
+    function World(width, height, seed, roughness) {
+        var _this = this;
         this.cells=[];
         this.loadedSize={
-            width:50, height:Math.floor(50*(window.innerHeight/window.innerWidth))+1
+            width:50, height:(50*(window.innerHeight/window.innerWidth))|0+2
         };
         this.offset={
             x:0, y:0
@@ -20,7 +21,30 @@ define(['blocks', 'generation'], function(Blocks, Generation){
         };
         this.generation=new Generation(this, roughness);
         this.pos={
-            x:60, y:60
+            x: (this.width / 2) | 0, y: (this.height / 2) | 0,
+            set: function (x, y) {
+                _this.pos.setCoord(x, 'x');
+                _this.pos.setCoord(y, 'y');
+            },
+            setCoord: function (n, coord) {
+                _this.playerPos[coord] -= _this.pos[coord];
+                _this.playerPos[coord] += n;
+                _this.pos[coord] = n;
+                _this.setLoaded();
+            },
+            add: function (x, y) {
+                _this.pos.addCoord(x, 'x');
+                _this.pos.addCoord(y, 'y');
+            },
+            addCoord: function (n, coord) {
+                _this.playerPos[coord] += n;
+                _this.pos[coord] += n;
+                _this.setLoaded();
+            }
+        };
+        this.playerPos = {
+            x: this.pos.x + ((this.loadedSize.width / 2) | 0),
+            y: this.pos.y + ((this.loadedSize.height / 2) | 0)
         };
     }
     World.prototype.setSpawnPoint=function(){
@@ -47,16 +71,32 @@ define(['blocks', 'generation'], function(Blocks, Generation){
             }
         }
     };
+    /*World.prototype.addOffset = function (value, coord) {
+        this.offset[coord]+=value;
+        if (this.offset[coord] < 0) {
+            while (this.offset[coord] < 0) {
+                ++this.offset[coord];
+                this.pos.addCoord(1, coord);
+            }
+        } else if (this.offset[coord] > 1) {
+            while (this.offset[coord] > 1) {
+                --this.offset[coord];
+                this.pos.addCoord(-1, coord);
+            }
+        }
+    };*/
     World.prototype.addOffset=function(value, coord){
         if(coord==='y') {
             this.offset[coord] += value;
             if (this.offset[coord] < 0) {
                 this.offset[coord] = 1;
-                this.pos[coord]-= 1;
+                this.pos[coord] -= 1;
+                this.playerPos[coord] -= 1;
                 this.setLoaded();
             } else if (this.offset[coord] > 1) {
                 this.offset[coord] = 0;
                 this.pos[coord] += 1;
+                this.playerPos[coord] += 1;
                 this.setLoaded();
             }
         }else{
@@ -64,10 +104,12 @@ define(['blocks', 'generation'], function(Blocks, Generation){
             if (this.offset.x < 0) {
                 this.offset.x = 1;
                 this.pos.x += 1;
+                this.playerPos[coord] += 1;
                 this.setLoaded();
             } else if (this.offset.x > 1) {
                 this.offset.x = 0;
                 this.pos.x -= 1;
+                this.playerPos[coord] -= 1;
                 this.setLoaded();
             }
         }
@@ -84,7 +126,7 @@ define(['blocks', 'generation'], function(Blocks, Generation){
         }else this.generation.generate();
     };
     World.prototype.draw=function(drawer){
-        drawer.drawWorldPreps(this);
+        drawer.drawWorldPreps();
         this.forEveryLoaded(function(block, nope, col, row){
             block.draw(drawer, col, row);
         });
@@ -102,6 +144,10 @@ define(['blocks', 'generation'], function(Blocks, Generation){
                 if(this.checkLoadedBlock(col, row, Blocks.ids)) fn(this.loaded[col][row], this.cells[col+this.pos.x][row+this.pos.y], col, row);
             }
         }
+    };
+    World.prototype.placeBlock = function (x, y, block) {
+        this.cells[x][y] = new Blocks[block].gen();
+        this.cells[x][y].lightLevel = Math.max(this.cells[x][y + 1].lightlevel, this.cells[x + 1][y].lightLevel, this.cells[x - 1][y].lightLevel, this.cells[y - 1].lightLevel) + 1 - this.transparency;
     };
     return World;
 });

@@ -14,7 +14,7 @@ define(['generation/structures/tree', 'blocks', 'mathUtils'], function(Tree, Blo
                             var chosenNature=Blocks.natureByChance[num];
                             this.world.cells[col][row]=new Blocks[chosenNature].gen();
                             if(chosenNature==='sapling'){
-                                this.saplings.push({x:col, y:row});
+                                this.saplings.push({ x: col, y: row });
                             }
                         }
                     }
@@ -28,8 +28,8 @@ define(['generation/structures/tree', 'blocks', 'mathUtils'], function(Tree, Blo
     Nature.prototype.generateTrees=function(){
             while(this.saplings.length){
                 var x=this.saplings[0].x;
-                var y=this.saplings[0].y;
-                var current=new Tree(this.world, x, y, Blocks.trunk, Blocks.leaf);
+                var y = this.saplings[0].y;
+                var current = new Tree(this.world, x, y, Blocks.trunk, Blocks.leaf);
                 this.trees.push(current);
                 current.grow();
                 this.saplings.shift();
